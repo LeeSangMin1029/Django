@@ -119,4 +119,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static') 이건 static 폴더가 적용이 안된다
+# 안되는 이유는 아마 시간이 지난 튜토리얼을 보고 따라해서 그런것 같다.
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 이건 된다
+STATICFILES_DIRS = ( os.path.join('static'), ) # 이것도 된다.
