@@ -94,4 +94,8 @@ def id_and_title(request):
     title_len=dict()
     for i in range(0,len(posts)):
         title_len[posts[i].id]=len(posts[i].title)
-    return render(request, 'blog/id_title.html', {'len':title_len})
+    id_title_sum=list()
+    for k,v in title_len.items():
+        id_title_sum.append(k+v)
+    id_title_sum.sort()
+    return render(request, 'blog/id_title.html', {'len':title_len, 'sum_list':id_title_sum})
