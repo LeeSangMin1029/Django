@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>id and title of length and sum</h2>
+{% for k, v in len.items %}
+    <p class='lead'>{{ k }}:{{ v }}, sum:{{ k|add:v }},</p>
+{% endfor %}
+{% endblock %}
