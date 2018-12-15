@@ -16,4 +16,11 @@ class PostSetCase(TestCase):
     
     def test_post_orderby(self):
         posts=Post.objects.order_by('id').filter(published_date__isnull=True)
-        
+        title_len=dict()
+        for i in range(0,len(posts)):
+            title_len[posts[i].id]=len(posts[i].title)
+        k_v_sum=list()
+        for k,v in title_len.items():
+            k_v_sum.append(k+v)
+        k_v_sum.sort()
+        print(k_v_sum)
