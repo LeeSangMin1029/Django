@@ -10,7 +10,8 @@ urlpatterns = [
     path('post/<int:pk>/publish/', views.post_publish, name='post_publish'),
     path('post/<int:pk>/remove/', views.post_remove, name='post_remove'),
     path('post/create/', views.post_random_create, name='post_random_create'),
-    path('publish_remove/', views.preview_remove, name='preview_remove'),
-    path('setlist/', views.post_deduplicate, name='post_deduplicate'),
+    path('preview/remove/', views.preview_remove, name='preview_remove'),
+    path('post/remove_duplicate/list', views.post_remove_duplicate_title, name='post_remove_duplicate_title'),
     path('id_title/',views.id_and_title, name='id_and_title'),
+    path('sum_list/',views.sum_of_id_title, name='sum_of_id_title'),
 ]
