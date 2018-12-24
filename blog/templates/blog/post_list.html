@@ -13,8 +13,9 @@
         <a href="{% url 'post_draft_list' %}" class="btn btn-default">Preview</a>
         <a href="{% url 'post_random_create' %}" class="btn btn-default">post_create_test</a>
         <a href="{% url 'preview_remove' %}" class="btn btn-default">preview_remove</a>
-        <a href="{% url 'post_deduplicate' %}" class="btn btn-default">post_set</a>
+        <a href="{% url 'post_remove_duplicate_title' %}" class="btn btn-default">post_set</a>
         <a href="{% url 'id_and_title' %}" class="btn btn-default">id_and_title</a>
+        <a href="{% url 'sum_of_id_title' %}" class="btn btn-default">sum_list</a>
     {% endif %}
     {% for post in posts %}
         <div>
