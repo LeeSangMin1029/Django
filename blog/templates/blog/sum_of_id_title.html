@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>sum of id, title</h2>
+    {% for i in sum_list %}
+        <p class='lead'>{{ i }},</p>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>id : title</h2>
+    {% for k, v in len.items %}
+        <p class='lead'>{{ k }}:{{ v }},</p>
+{% endfor %}
+
+{% endblock %}
