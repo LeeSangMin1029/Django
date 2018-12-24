@@ -3,6 +3,7 @@ from blog.models import Post
 from django.utils import timezone
 from random import randint
 from django.contrib.auth.models import User
+from django.db.models import Sum
 
 # Create your tests here.
 class PostSetCase(TestCase):
@@ -14,13 +15,7 @@ class PostSetCase(TestCase):
             n=randint(0,6)
             Post.objects.create(author=me, title=title[n], text=str(i))
     
-    def test_post_orderby(self):
-        posts=Post.objects.order_by('id').filter(published_date__isnull=True)
-        title_len=dict()
-        for i in range(0,len(posts)):
-            title_len[posts[i].id]=len(posts[i].title)
-        k_v_sum=list()
-        for k,v in title_len.items():
-            k_v_sum.append(k+v)
-        k_v_sum.sort()
-        print(k_v_sum)
+    def test(self):
+        posts=Post.objects.select_related('author')
+        
+        
