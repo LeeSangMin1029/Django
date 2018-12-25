@@ -146,8 +146,11 @@ USE_TZ = True
 #     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 # )
 
+
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') 이건 static 폴더가 적용이 안된다
 # 안되는 이유는 버전이 달라서 그런 것 같다.
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 이건 된다
 STATICFILES_DIRS = ( os.path.join('static'), ) # 이것도 된다.
+
+LOGIN_REDIRECT_URL = '/'
