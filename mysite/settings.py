@@ -25,7 +25,7 @@ SECRET_KEY = 'qh4hmwyk5+nxj-9m7%s2zb&pc-t68$tcj8g6d+w$ri7!nirj%p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', 'localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 # INTERNAL_IPS = ('127.0.0.1',)
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'templates') ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,6 +132,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') 이건 static 폴더가 적용이 안된다
 # 안되는 이유는 버전이 달라서 그런 것 같다.
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 이건 된다
-STATICFILES_DIRS = ( os.path.join('static'), ) # 이것도 된다.
 
 LOGIN_REDIRECT_URL = '/'
+
+STATICFILES_DIRS = (os.path.join('mysite', 'static'),) # 이것도 된다.
+
+INTERNAL_IPS = ['127.0.0.1']
