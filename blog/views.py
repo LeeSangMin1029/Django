@@ -87,7 +87,10 @@ def id_and_title(request):
 @login_required
 def sum_of_id_title(request):
     posts=Post.objects.filter(published_date__isnull=False).select_related('author')
+    # 여기서 미리 title, id의 더한 값을 리스트로 변경한다.
     sum_list=list(i.id+len(i.title) for i in posts)
+    # bubbleSort() 함수를 이용해서 오름차순으로 출력되게 만들어준다. 
+    sum_list=bubbleSort(sum_list)
     return render(request, 'blog/sum_of_id_title.html', {'sum_list':sum_list})
 
 def add_comment_to_post(request, pk):
@@ -124,3 +127,20 @@ def comment_remove(request, pk):
     post_pk = comment.post.pk
     comment.delete()
     return redirect('post_detail', pk=post_pk)
+
+# 사용자 정의 함수
+# 만약 x[i] 값이 x[i+1]의 값보다 크다면 바꿔주는 함수
+def swap(x, i, j):
+    x[i], x[j] = x[j], x[i]
+
+# 값을 오름차순으로 정렬해주는 함수
+def bubbleSort(x):
+    # x(sum_list)의 길이만큼 반복하면서 0~(최대길이-2)의 값을 차례대로
+    # size라는 변수에 하나씩 넣는다.
+    for size in range(1, len(x)+1):
+        # 
+        for i in range(size-1):
+            # 현재 요소가 다음 요소보다 크다면 서로 바꿔주는 함수 swap()을 호출
+            if x[i] > x[i+1]:
+                swap(x, i, i+1)
+    return x
