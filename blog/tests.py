@@ -3,7 +3,6 @@ from blog.models import Post
 from django.utils import timezone
 from random import randint
 from django.contrib.auth.models import User
-from django.db.models import Sum
 
 # Create your tests here.
 class PostSetCase(TestCase):
