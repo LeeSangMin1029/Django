@@ -4,13 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.http import Http404
 from django.contrib import messages
-from random import randint
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
 # Create your views here.
 def post_list(request):
-    posts=Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts=Post.objects.prefetch_related('comments').order_by('-created_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
@@ -47,34 +46,23 @@ def post_edit(request, pk):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 @login_required
-def post_draft_list(request):
-    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
-
-@login_required
-def post_publish(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    post.publish()
-    return redirect('post_list')
-
-@login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
-    return redirect('post_draft_list')
+    return redirect('post_list')
 
 # 말씀하신대로 문자열만 출력되게 변경했습니다.
 # 결과는 전과 같이 나오지만 좀 더 코드가 보기가 좋아졌습니다.
 @login_required
 def post_remove_duplicate_title(request):
-    posts=Post.objects.filter(published_date__isnull=False).select_related('author')
+    posts=Post.objects.select_related('author')
     title=set(i.title for i in posts)
     return render(request, 'blog/post_set_list.html', {'posts':title})
 
 # id 별로 title 필드의 글자 수 출력
 @login_required
 def id_and_title(request):
-    posts=Post.objects.filter(published_date__isnull=False).select_related('author')
+    posts=Post.objects.select_related('author')
     # id와 title길이를 담을 딕셔너리
     i_and_t=dict()
     # 해당 id별로 title길이를 담는다.
@@ -86,13 +74,14 @@ def id_and_title(request):
 # 웹페이지에 오름차순으로 출력이 되야하는데 id 별로 된다...
 @login_required
 def sum_of_id_title(request):
-    posts=Post.objects.filter(published_date__isnull=False).select_related('author')
+    posts=Post.objects.select_related('author')
     # 여기서 미리 title, id의 더한 값을 리스트로 변경한다.
     sum_list=list(i.id+len(i.title) for i in posts)
     # bubbleSort() 함수를 이용해서 오름차순으로 출력되게 만들어준다. 
     sum_list=bubbleSort(sum_list)
     return render(request, 'blog/sum_of_id_title.html', {'sum_list':sum_list})
 
+@login_required
 def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -138,7 +127,6 @@ def bubbleSort(x):
     # x(sum_list)의 길이만큼 반복하면서 0~(최대길이-2)의 값을 차례대로
     # size라는 변수에 하나씩 넣는다.
     for size in range(1, len(x)+1):
-        # 
         for i in range(size-1):
             # 현재 요소가 다음 요소보다 크다면 서로 바꿔주는 함수 swap()을 호출
             if x[i] > x[i+1]:
