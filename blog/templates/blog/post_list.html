@@ -1,16 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
     {% if user.is_authenticated %}
         <a href="{% url 'post_new' %}" class="btn btn-default">Add</a>
-        <a href="{% url 'post_draft_list' %}" class="btn btn-default">Preview</a>
         <a href="{% url 'post_remove_duplicate_title' %}" class="btn btn-default">post_set</a>
         <a href="{% url 'id_and_title' %}" class="btn btn-default">id_and_title</a>
         <a href="{% url 'sum_of_id_title' %}" class="btn btn-default">sum_list</a>
@@ -21,7 +13,7 @@
             <p class='lead'>{{ post.text|linebreaksbr }}</p>
         </div>
         <div class="date">
-            {{ post.published_date }}
+            {{ post.created_date }}
         </div>
     {% endfor %}
 {% endblock %}
