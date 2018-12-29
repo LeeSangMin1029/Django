@@ -25,7 +25,7 @@ SECRET_KEY = 'qh4hmwyk5+nxj-9m7%s2zb&pc-t68$tcj8g6d+w$ri7!nirj%p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','localhost']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', 'localhost']
 
 
 # Application definition
@@ -59,7 +59,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, 'templates') ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,9 +132,9 @@ STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static') 이거는
 # 개발환경에서는 적용이 되지 않는다. 배포할 때 사용하는 설정변수이다.
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),] 이건 된다
-# STATICFILES_DIRS = ( os.path.join('static'), )  이것도 된다.
-STATICFILES_DIRS = (os.path.join('blog','static'),)
 
 LOGIN_REDIRECT_URL = '/'
+
+STATICFILES_DIRS = (os.path.join('blog', 'static'),) # 이것도 된다.
 
 INTERNAL_IPS = ['127.0.0.1']
