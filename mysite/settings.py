@@ -135,10 +135,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = '/'
 
-<<<<<<< HEAD
 STATICFILES_DIRS = (os.path.join('blog', 'static'),) # 이것도 된다.
-=======
-STATICFILES_DIRS = (os.path.join('mysite', 'static'),) # 이것도 된다.
->>>>>>> f753ad89de549570a7ca982701251ff88aef735b
 
 INTERNAL_IPS = ['127.0.0.1']
