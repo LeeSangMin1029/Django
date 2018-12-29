@@ -9,39 +9,62 @@ from .forms import PostForm, CommentForm
 
 # Create your views here.
 def post_list(request):
+    # 쿼리를 최적화하기 위해서 아래와 같이 설정해줬다.
+    # 미리 필요한 데이터를 다 받아와서 템플릿으로 넘겼을 때 더 이상 쿼리가 발생하지 않도록 해줬다.
     posts=Post.objects.prefetch_related('comments').order_by('-created_date')
     return render(request, 'blog/post_list.html', {'posts':posts})
 
 def post_detail(request, pk):
+    # 각각의 pk에 해당되는 Post인스턴스를 불러온다. 만약 해당되는 Post가 없다면
+    # 바로 페이지에서 에러를 일으킨다.
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
 
 @login_required
 def post_new(request):
+    # 사용자가 데이터를 입력했을 때 그러니까
+    # 저장버튼 save를 눌렀을 때 데이터를 보낸다.
+    # 사용자가 보낸 요청의 형식이라고 해야하나..
     if request.method == "POST":
+        # 그러면 폼에는 사용자가 입력한 데이터가 들어가게 된다.
+        # request.POST에는 사용자가 입력한 데이터가 있다.
         form = PostForm(request.POST)
+        # 폼에 입력한 데이터의 요소들을 검사한다. 맞으면 실행하고 아니면
+        # 입력하라고 메시지를 띄워준다.
         if form.is_valid():
+            # 해당 폼에 들어갈 데이터는 사용자가 다 입력을 했지만,
+            # 로그인한 사용자의 정보도 필요하기 때문에 db에 저장하는 것을 지연시킨다.
             post = form.save(commit=False)
+            # 해당 정보가 없으면 만약 admin이라는 유저에 대한
+            # 정보가 없기 때문에 문제가 생긴다.
             post.author = request.user
-            # post.published_date = timezone.now()
+            # 이제 필요한 정보가 저장되었으니, db에 저장시킨다.
             post.save()
+            # 사용자가 저장한 정보를 보여주는 페이지로 이동한다.
             return redirect('post_detail', pk=post.pk)
+    # 처음 글을 생성하려고 Add 버튼을 눌렀을 때 실행되는 조건문
     else:
+        # 실행이 되면 빈 폼을 보여준다. 당연히 넘겨주는 데이터는 없다.
         form = PostForm()
+    # 그렇게 되면 사용자가 폼에다가 데이터를 입력하기 전에 이미 함수는 실행이 된것이다.
     return render(request, 'blog/post_edit.html', {'form': form})
 
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
+        # post_new함수와 비슷한데 두 번째 인수로 Post모델의 인스턴스를 넣어준다.
+        # 수정하고 싶은 글의 내용을 불러와서 미리 넣어둔다.
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            # post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
+        # 이것도 마찬가지로 사용자가 입력한 데이터는 필요없고, 이전에 글을 만들 때
+        # 입력한 데이터를 불러와서 미리 넣어둔다. 그럼 사용자는 해당 글을 수정하는 것처럼
+        # 느낄 것이다.
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
 
